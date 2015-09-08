@@ -10,18 +10,71 @@
       $(document).ready(function(){
         var $body = $('body');
         $body.html('');
+        $body.css({'margin': '20px 0px 0px'});
+
 
         var index = streams.home.length - 1;
         while(index >= 0){
           var tweet = streams.home[index];
           var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
+          var $timestamp = $('<span></span>');
+          var $user = $('<span></span>');
+          var $message = $('<span></span>');
+          
+          $user.css({'display': 'inline-block', 'width': '15%'});
+          $message.css({'display': 'inline-block', 'width': '40%'});
+
+          $timestamp.text(tweet.created_at);
+          $user.text(tweet.user);
+          $message.text(tweet.message);
+
+          tweet.displayed = true;
           $tweet.appendTo($body);
+          $user.appendTo($tweet);
+          $message.appendTo($tweet);
+          $timestamp.appendTo($tweet);
           index -= 1;
         }
 
-      });
+        Object.observe(streams, function(changes){
+            alert('something happened');
+        });
 
+        var btn = document.createElement('BUTTON');
+        var t = document.createTextNode("CLICK ME");
+
+        btn.appendChild(t);
+        document.body.appendChild(btn);
+        $('BUTTON').css({'position': 'fixed', 'top': '0', 'left': '50%'});
+        $('BUTTON').on('click', function(){
+          var index = streams.home.length - 1;
+          while(index >= 0){
+            var tweet = streams.home[index];
+            var $tweet = $('<div></div>');
+            
+            if(tweet.displayed !== true){
+              var $timestamp = $('<span></span>');
+              var $user = $('<span></span>');
+              var $message = $('<span></span>');
+          
+              $user.css({'display': 'inline-block', 'width': '15%'});
+              $message.css({'display': 'inline-block', 'width': '40%'});
+
+              $timestamp.text(tweet.created_at);
+              $user.text(tweet.user);
+              $message.text(tweet.message);
+
+              tweet.displayed = true;
+              $tweet.appendTo($body);
+              $user.appendTo($tweet);
+              $message.appendTo($tweet);
+              $timestamp.appendTo($tweet);
+            }
+            index -= 1;
+          }
+        });
+
+      });
     </script>
   </body>
 </html>
