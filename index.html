@@ -6,51 +6,29 @@
   </head>
   <body>
     <script>
-
       $(document).ready(function(){
+        //Initialize body
         var $body = $('body');
         $body.html('');
-        $body.css({'margin': '20px 0px 0px'});
+        $body.css({'margin': '40px auto'});
 
+        //create UL of tweets; attach it to the body
+        var $tweetList = $('<ul style = \'list-style-type: none\'></ul>');
+        $tweetList.appendTo($body);
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          var $timestamp = $('<span></span>');
-          var $user = $('<span></span>');
-          var $message = $('<span></span>');
-          
-          $user.css({'display': 'inline-block', 'width': '15%'});
-          $message.css({'display': 'inline-block', 'width': '40%'});
-
-          $timestamp.text(tweet.created_at);
-          $user.text(tweet.user);
-          $message.text(tweet.message);
-
-          tweet.displayed = true;
-          $tweet.appendTo($body);
-          $user.appendTo($tweet);
-          $message.appendTo($tweet);
-          $timestamp.appendTo($tweet);
-          index -= 1;
-        }
-
-        Object.observe(streams, function(changes){
-            alert('something happened');
-        });
-
+        //Create new button; attach it to the body
         var btn = document.createElement('BUTTON');
-        var t = document.createTextNode("CLICK ME");
-
+        var t = document.createTextNode("Load New Tweets");
         btn.appendChild(t);
         document.body.appendChild(btn);
-        $('BUTTON').css({'position': 'fixed', 'top': '0', 'left': '50%'});
+        $('BUTTON').css({'position': 'fixed', 'top': '0', 'width': '100%', 'height': '30px', 'background-color': 'yellow'});
+
+        //Load new tweets as li and add them to the UL of tweets when button is clicked
         $('BUTTON').on('click', function(){
           var index = streams.home.length - 1;
           while(index >= 0){
             var tweet = streams.home[index];
-            var $tweet = $('<div></div>');
+            var $tweet = $('<li></li>');
             
             if(tweet.displayed !== true){
               var $timestamp = $('<span></span>');
@@ -65,15 +43,42 @@
               $message.text(tweet.message);
 
               tweet.displayed = true;
-              $tweet.appendTo($body);
+              $tweet.appendTo($tweetList);
               $user.appendTo($tweet);
               $message.appendTo($tweet);
               $timestamp.appendTo($tweet);
+              
+              $('li:even').css({'background-color': '#E0E0E0'});
             }
             index -= 1;
           }
         });
 
+
+        // Load initial tweets and add them to the tweet list
+        var index = streams.home.length - 1;
+        while(index >= 0){
+          var tweet = streams.home[index];
+          var $tweet = $('<li></li>');
+          var $timestamp = $('<span></span>');
+          var $user = $('<span></span>');
+          var $message = $('<span></span>');
+
+          $user.css({'display': 'inline-block', 'width': '15%'});
+          $message.css({'display': 'inline-block', 'width': '40%'});
+
+          $timestamp.text(tweet.created_at);
+          $user.text(tweet.user);
+          $message.text(tweet.message);
+
+          tweet.displayed = true;
+          $tweet.appendTo($tweetList);
+          $user.appendTo($tweet);
+          $message.appendTo($tweet);
+          $timestamp.appendTo($tweet);
+          index -= 1;
+        }
+        $('li:even').css({'background-color': '#E0E0E0'});
       });
     </script>
   </body>
