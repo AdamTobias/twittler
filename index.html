@@ -9,7 +9,7 @@
       $(document).ready(function(){
         //Initialize body
         var $body = $('body');
-        var $tweet, $user, $timestamp, $message, tweet;
+        var $tweet, $user, $timestamp, $message, tweet, $tweetHistory;
         $body.html('');
         $body.css({'margin': '40px auto'});
 
@@ -29,12 +29,12 @@
           var index = streams.home.length - 1;
           while(index >= 0){
             tweet = streams.home[index];
-            $tweet = $('<li></li>');
+            $tweet = $('<li class=\'root_tweet\'></li>');
             
             if(tweet.displayed !== true){
-              $timestamp = $('<span></span>');
-              $user = $('<span></span>');
-              $message = $('<span></span>');
+              $timestamp = $('<span class=\'timestamp\'></span>');
+              $user = $('<span class= \'user\'></span>');
+              $message = $('<span class = \'message\'></span>');
           
               $user.css({'display': 'inline-block', 'width': '15%'});
               $message.css({'display': 'inline-block', 'width': '40%'});
@@ -49,21 +49,54 @@
               $message.appendTo($tweet);
               $timestamp.appendTo($tweet);
               
-              $('li:even').css({'background-color': '#E0E0E0'});
+              $('.root_tweet:even').css({'background-color': '#E0E0E0'});
             }
             index -= 1;
           }
         });
 
+        $(document).on('click', '.user', function(){
+          var index = streams.users[$(this).text()].length - 1;
+
+          if($(this).parent().find('#tweet_history').length){
+            $(this).parent().find('#tweet_history').remove();
+          } else {
+
+            $tweetHistory = $('<ul id=\'tweet_history\'style = \'list-style-type: none; color: blue\'></ul>');
+
+            while(index >= 0){
+              tweet = streams.users[$(this).text()][index];
+              $tweet = $('<li></li>');
+              $timestamp = $('<span class=\'timestamp\'></span>');
+              $user = $('<span class= \'user\'></span>');
+              $message = $('<span class = \'message\'></span>');
+
+              $user.css({'display': 'inline-block', 'width': '15%'});
+              $message.css({'display': 'inline-block', 'width': '40%'});
+
+              $timestamp.text(tweet.created_at);
+              $user.text(tweet.user);
+              $message.text(tweet.message);
+
+              tweet.displayed = true;
+              $tweet.appendTo($tweetHistory);
+              $user.appendTo($tweet);
+              $message.appendTo($tweet);
+              $timestamp.appendTo($tweet);
+              index -= 1;
+            }
+            $tweetHistory.appendTo($(this).parent());
+          }
+        });
 
         // Load initial tweets and add them to the tweet list
         var index = streams.home.length - 1;
         while(index >= 0){
           tweet = streams.home[index];
-          $tweet = $('<li></li>');
-          $timestamp = $('<span></span>');
-          $user = $('<span></span>');
-          $message = $('<span></span>');
+          $tweet = $('<li class = \'root_tweet\'></li>');
+          $timestamp = $('<span class=\'timestamp\'></span>');
+          $user = $('<span class= \'user\'></span>');
+          $message = $('<span class = \'message\'></span>');
 
           $user.css({'display': 'inline-block', 'width': '15%'});
           $message.css({'display': 'inline-block', 'width': '40%'});
@@ -79,7 +112,7 @@
           $timestamp.appendTo($tweet);
           index -= 1;
         }
-        $('li:even').css({'background-color': '#E0E0E0'});
+        $('.root_tweet:even').css({'background-color': '#E0E0E0'});
       });
     </script>
   </body>
