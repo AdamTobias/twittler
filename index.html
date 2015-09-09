@@ -9,6 +9,7 @@
       $(document).ready(function(){
         //Initialize body
         var $body = $('body');
+        var $tweet, $user, $timestamp, $message, tweet;
         $body.html('');
         $body.css({'margin': '40px auto'});
 
@@ -27,13 +28,13 @@
         $('BUTTON').on('click', function(){
           var index = streams.home.length - 1;
           while(index >= 0){
-            var tweet = streams.home[index];
-            var $tweet = $('<li></li>');
+            tweet = streams.home[index];
+            $tweet = $('<li></li>');
             
             if(tweet.displayed !== true){
-              var $timestamp = $('<span></span>');
-              var $user = $('<span></span>');
-              var $message = $('<span></span>');
+              $timestamp = $('<span></span>');
+              $user = $('<span></span>');
+              $message = $('<span></span>');
           
               $user.css({'display': 'inline-block', 'width': '15%'});
               $message.css({'display': 'inline-block', 'width': '40%'});
@@ -58,11 +59,11 @@
         // Load initial tweets and add them to the tweet list
         var index = streams.home.length - 1;
         while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<li></li>');
-          var $timestamp = $('<span></span>');
-          var $user = $('<span></span>');
-          var $message = $('<span></span>');
+          tweet = streams.home[index];
+          $tweet = $('<li></li>');
+          $timestamp = $('<span></span>');
+          $user = $('<span></span>');
+          $message = $('<span></span>');
 
           $user.css({'display': 'inline-block', 'width': '15%'});
           $message.css({'display': 'inline-block', 'width': '40%'});
